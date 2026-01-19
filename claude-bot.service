@@ -1,0 +1,15 @@
+[Unit]
+Description=Claude Code Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/claude-bot
+EnvironmentFile=/home/pi/claude-bot/.env
+ExecStart=/usr/bin/node /home/pi/claude-bot/dist/bot.js
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
