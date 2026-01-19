@@ -4,6 +4,7 @@ import { spawn, ChildProcess } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { randomUUID } from 'crypto';
+import { getDeviceStatus } from './device-status.js';
 
 // ============================================================================
 // Configuration
@@ -637,6 +638,12 @@ bot.command('pause', async (ctx) => {
   await pauseCurrentTask(ctx);
 });
 
+// /device-status command
+bot.command('device_status', async (ctx) => {
+  const status = await getDeviceStatus();
+  await ctx.reply(status, { parse_mode: 'Markdown' });
+});
+
 // Callback queries
 bot.on('callback_query', async (ctx) => {
   const query = ctx.callbackQuery;
@@ -791,6 +798,7 @@ async function main(): Promise<void> {
     { command: 'pause', description: 'Pause running task' },
     { command: 'stop', description: 'Stop current task' },
     { command: 'cancel', description: 'Cancel task immediately' },
+    { command: 'device_status', description: 'Show device stats (CPU, RAM, temp)' },
   ], { scope: { type: 'chat', chat_id: CONFIG.ALLOWED_USER_ID } });
 
   console.log('Starting bot...');
