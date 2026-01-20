@@ -19,6 +19,32 @@ A Telegram bot that allows you to execute tasks via Claude Code CLI on a Raspber
 - Telegram Bot Token (from [@BotFather](https://t.me/BotFather))
 - Your Telegram User ID (from [@userinfobot](https://t.me/userinfobot))
 
+## Hardware Requirements (Raspberry Pi)
+
+| Model | RAM | Status |
+|-------|-----|--------|
+| Pi 3B/3B+ | 1GB | ✅ Works (limited browser automation) |
+| Pi 4 (2GB) | 2GB | ✅ Recommended |
+| Pi 4 (4GB+) | 4GB+ | ✅ Best performance |
+| Pi 5 | 4GB+ | ✅ Best performance |
+
+### Resource Usage
+
+| Component | RAM Usage | Notes |
+|-----------|-----------|-------|
+| Node.js bot | ~50-100MB | Lightweight |
+| Claude Code CLI | ~100-150MB | API client only |
+| Playwright/Chromium | ~300-500MB | Optional, memory hungry |
+
+**Note for Pi 3 users:** The bot and Claude CLI work fine. Browser automation (Playwright) will be slow due to 1GB RAM limit. Consider increasing swap to 1GB:
+
+```bash
+sudo dphys-swapfile swapoff
+sudo sed -i 's/CONF_SWAPSIZE=.*/CONF_SWAPSIZE=1024/' /etc/dphys-swapfile
+sudo dphys-swapfile setup
+sudo dphys-swapfile swapon
+```
+
 ## Installation
 
 ### 1. Clone the repository
@@ -122,6 +148,7 @@ sudo journalctl -u claude-bot -f
 | `/pause` | Pause running task |
 | `/stop` | Stop current task gracefully |
 | `/cancel` | Cancel task immediately |
+| `/device_status` | Show device stats (CPU, RAM, temp) |
 
 ### Example workflow
 
